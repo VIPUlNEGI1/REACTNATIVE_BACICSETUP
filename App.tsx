@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';  
@@ -17,22 +18,50 @@ const BottomTabs = createBottomTabNavigator();
 
 function ExpenseOverview() {
   return (
-    <BottomTabs.Navigator
+  <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
-        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+        headerStyle: { 
+          backgroundColor: GlobalStyles.colors.primary500,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+        },
         headerTintColor: "white",
-        tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        tabBarActiveTintColor: GlobalStyles.colors.primary100,
+        tabBarStyle: { 
+          backgroundColor: GlobalStyles.colors.primary500,
+          borderTopWidth: 0,
+          elevation: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+        tabBarActiveTintColor: GlobalStyles.colors.accent500,
+        tabBarInactiveTintColor: GlobalStyles.colors.primary100,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
         headerRight: ({ tintColor }) => (
-          <IconButton
-            icon="add-outline"
-            size={24}
-            color={tintColor}
-            onPress={() => {
-              navigation.navigate('ManageExpenses');
-              console.log("Add pressed!");
-            }}
-          />
+          <View >
+            <IconButton
+              icon="add-outline"
+              size={28}
+              color={tintColor}
+              onPress={() => {
+                navigation.navigate('ManageExpenses');
+                console.log("Add pressed!");
+              }}
+           
+            />
+          </View>
         ),
       })}
     >
@@ -40,11 +69,16 @@ function ExpenseOverview() {
         name="Recent"
         component={RecentExpenses}
         options={{
-
           title: 'Recent Expenses',
-          tabBarLabel:'Recent',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time" color={color} size={size} />
+          tabBarLabel: 'Recent',
+          tabBarIcon: ({   size, focused }) => (
+            <View  >
+              <Ionicons 
+                name="time" 
+                color={focused ? GlobalStyles.colors.accent500 : GlobalStyles.colors.primary100} 
+                size={focused ? size + 2 : size} 
+              />
+            </View>
           ),
         }}
       />
@@ -53,9 +87,15 @@ function ExpenseOverview() {
         component={AllExpenses}
         options={{
           title: 'All Expenses',
-          tabBarLabel:'All Expenses',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" color={color} size={size} />
+          tabBarLabel: 'All Expenses',
+          tabBarIcon: ({  size, focused }) => (
+            <View  >
+              <Ionicons 
+                name="calendar" 
+                color={focused ? GlobalStyles.colors.accent500 : GlobalStyles.colors.primary100} 
+                size={focused ? size + 2 : size} 
+              />
+            </View>
           ),
         }}
       />
@@ -74,6 +114,7 @@ export default function App() {
           screenOptions={{
             headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
             headerTintColor: 'white',
+
           }}
         >
           <Stack.Screen
